@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mirror.mirror_springboot_test.dao.UserDao">
+
+    <!-- 配置 查询结果的列名和实体类的属性名的对应关系
+    <resultMap id="userMap" type="uSeR">
+        主键字段的对应
+        <id property="userId" column="id"></id>
+        非主键字段的对应
+        <result property="userName" column="username"></result>
+        <result property="userAddress" column="address"></result>
+        <result property="userSex" column="sex"></result>
+        <result property="userBirthday" column="birthday"></result>
+    </resultMap>
+    -->
+    <!--配置查询所有用户-->
+    <select id="findAllUser" resultType="user">
+        select * from user
+    </select>
+
+    <!--    配置保存用户-->
+    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+    <!-- <selectKey keyProperty="id" resultType="int" order="AFTER" >
+            select last_insert_id();
+         </selectKey>
+        -->
+         insert into user(username,password,age,sex) values(#{username},#{password},#{age},#{sex});
+    </insert>
+
+    <!--    配置修改用户-->
+    <update id="updateUser" parameterType="user">
+       update user set username=#{username},address=#{address},sex=#{sex},birthday=#{birthday} where id=#{id}
+    </update>
+
+    <!--    配置根据Id删除用户-->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        delete from user where id=#{id};
+    </delete>
+
+    <!--    配置根据Id查询用户信息-->
+    <select id="findUserById" resultType="user" parameterType="java.lang.Integer" >
+        select * from user where uid = #{uid};
+    </select>
+    <!--    配置根据用户姓名模糊查询用户信息-->
+    <select id="findByName" resultType="user" parameterType="String">
+        select * from user  where username like #{username};
+    </select>
+
+    <!--    用户总数量-->
+    <select id="findTotal" resultType="Integer">
+        select count(*) from user;
+    </select>
+
+
+
+
+    <!-- 复合条件查询-->
+    <select id="findUserByWhere" resultType="com.mirror.mirror_springboot_test.domain.User" parameterType="user">
+        select * from user
+        <where>
+            <if test="uid != null">
+                and uid=#{uid}
+            </if>
+            <if test="username != null and username != ''">
+                and username=#{username}
+            </if>
+            <if test="password != null and password != ''">
+                and password=#{password}
+            </if>
+            <if test="age != null">
+                and age=#{age}
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex=#{sex}
+            </if>
+        </where>
+    </select>
+</mapper>
