@@ -3,6 +3,7 @@ package com.mirror.mirror_springboot_test.controller;
 import com.mirror.mirror_springboot_test.domain.User;
 import com.mirror.mirror_springboot_test.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
+@ComponentScan({"com.mirror.mirror_springboot_test.service"})
 @RequestMapping("/UserController")
 public class UserController {
 
@@ -31,5 +33,8 @@ public class UserController {
         modelAndView.setViewName("list");
         return modelAndView;
     }
-
+    @RequestMapping("/bt")
+    public String bt(){
+        return "bt";
+    }
 }
